@@ -67,31 +67,33 @@ class ListaCompras
                 $this->Add($prod);
             }
         }
-
-        $item->prod = $pProd;
-
-        $item->prod->quantidade = $pQuantidade;
-
-        $item->prod->valorTotalItem = $pQuantidade * $item->prod->GetValue();
-
-        if ( $this->isEmpty )
-        {
-            $this->_firstItemAdd = $item;
-
-            $this->isEmpty = FALSE;            
-        }
         else
         {
-            $item->prod->SetPrev($this->_lastItemAdd);
-
-            $this->_lastItemAdd->prod->SetNext($item->prod);
+            $item->prod = $pProd;
+            
+            $item->prod->quantidade = $pQuantidade;
+            
+            $item->prod->valorTotalItem = $pQuantidade * $item->prod->GetValue();
+            
+            if ( $this->isEmpty )
+            {
+                $this->_firstItemAdd = $item;
+                
+                $this->isEmpty = FALSE;            
+            }
+            else
+            {
+                $item->prod->SetPrev($this->_lastItemAdd);
+                
+                $this->_lastItemAdd->prod->SetNext($item->prod);
+            }
+            
+            $this->_size += 1;
+            
+            $this->UpdateValorTotal();
+            
+            $this->_lastItemAdd = $item;
         }
-
-        $this->_size += 1;
-
-        $this->UpdateValorTotal();
-
-        $this->_lastItemAdd = $item;
     }
 
     private function UpdateValorTotal()
