@@ -13,11 +13,11 @@ $list = new ListaCompras();
 $db = new DB();
 
 $produtos = array();
-$produtos[] = new Produto(1, "Computador", "Super Computador da XUXA", 1800);
-$produtos[] = new Produto(2, "Mochila", "Qualquer mochila por ai", 500);
-$produtos[] = new Produto(3, "Fone de ouvido da RAIZIIIR", "Aquela marca cara", 5000);
-$produtos[] = new Produto(4, "Kit Gamer", "KIT TOPP", 4000);
-$produtos[] = new Produto(5, "Jogo TOPSTER", "JOGO TOPP", 100);
+$produtos[0] = new Produto(1, "Computador", "Super Computador da XUXA", 1800);
+$produtos[1] = new Produto(2, "Mochila", "Qualquer mochila por ai", 500);
+$produtos[2] = new Produto(3, "Fone de ouvido da RAIZIIIR", "Aquela marca cara", 5000);
+$produtos[3] = new Produto(4, "Kit Gamer", "KIT TOPP", 4000, array($produtos[0], $produtos[2]));
+$produtos[4] = new Produto(5, "Jogo TOPSTER", "JOGO TOPP", 100);
 
 if ( !empty( $_GET['op'] ) )
 {
@@ -27,7 +27,18 @@ if ( !empty( $_GET['op'] ) )
     {
         $id = $_GET['id'];
 
-        $db->Add($id);
+        $prod = Funcoes::findProd($produtos, $id);
+
+        if( $prod->isKit() )
+        {
+            foreach ($prod->GetKit() as $key => $prod) {
+                $db->Add($prod->GetId());
+            }
+        } else
+        {
+            $db->Add($id);
+        }
+
     }
     else if( $get == "delete" && $_GET['id'] )
     {

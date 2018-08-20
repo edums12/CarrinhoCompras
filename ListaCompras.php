@@ -60,7 +60,14 @@ class ListaCompras
     public function Add($pProd, $pQuantidade = 1)
     {
         $item = new StdClass();
-        
+
+        if( $pProd->isKit() )
+        {
+            foreach ($pProd->GetKit() as $key => $prod) {
+                $this->Add($prod);
+            }
+        }
+
         $item->prod = $pProd;
 
         $item->prod->quantidade = $pQuantidade;
@@ -78,7 +85,6 @@ class ListaCompras
             $item->prod->SetPrev($this->_lastItemAdd);
 
             $this->_lastItemAdd->prod->SetNext($item->prod);
-
         }
 
         $this->_size += 1;

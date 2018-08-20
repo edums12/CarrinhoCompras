@@ -9,6 +9,8 @@ class Produto
 
     private $_description = NULL;
 
+    private $_kit = NULL;
+
     private $_value = 0.00;
 
     private $_prev = NULL;
@@ -42,6 +44,19 @@ class Produto
         return $prod;
     }
 
+    public function isKit()
+    {
+        if( !is_null($this->_kit) )
+            return TRUE;
+
+        return FALSE;
+    }
+
+    public function GetKit()
+    {
+        return (object) $this->_kit;
+    }
+
     public function SetPrev($pProd)
     {
         $this->_prev = $pProd;
@@ -63,7 +78,7 @@ class Produto
     }
 
     // Métodos
-    public function __construct($pIdProduto, $pNome, $pDescription, $pValue, $pPrev = NULL, $pNext = NULL)
+    public function __construct($pIdProduto, $pNome, $pDescription, $pValue, $pKit = NULL, $pPrev = NULL, $pNext = NULL)
     {
         $this->_idProduto = $pIdProduto;
 
@@ -72,6 +87,9 @@ class Produto
         $this->_description = $pDescription;
 
         $this->_value = $pValue;
+
+        if ( !is_null($pKit) )
+            $this->_kit = $pKit;
 
         if( !is_null($pPrev) )
             $this->SetPrev( $pPrev );
